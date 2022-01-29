@@ -1,0 +1,68 @@
+#kind: StorageClass
+#apiVersion: storage.k8s.io/v1
+#metadata:
+#  name: mongo-notification-sc
+#provisioner: kubernetes.io/azure-disk
+#mountOptions:
+#  - dir_mode=0777
+#  - file_mode=0777
+#  - uid=0
+#  - gid=0
+#  - mfsymlinks
+#  - cache=strict
+#parameters:
+#  skuName: Standard_LRS
+#---
+
+# each replica pod gets a unique PersistentVolumeClaim associated with it
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo-notification
+spec:
+  selector:
+    matchLabels:
+      app: mongo-notification-db
+  serviceName: mongo-notification
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mongo-notification-db
+    spec:
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        runAsUser: 0
+      containers:
+        - name: mongo
+          image: mongo:4.0.21
+          envFrom:
+            - secretRef:
+                name: mongodb-server-credentials
+          ports:
+            - containerPort: 27017
+              name: mongo
+          volumeMounts:
+            - name: mongo-volume
+              mountPath: /data/db
+  volumeClaimTemplates:
+    - metadata:
+        name: mongo-volume
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: managed-premium
+        resources:
+          requests:
+            storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-notification
+spec:
+  selector:
+    app: mongo-notification-db
+  ports:
+    - port: 27017
+      targetPort: 27017

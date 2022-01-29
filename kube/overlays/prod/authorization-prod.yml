@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authorization
+spec:
+  selector:
+    matchLabels:
+      app: authorization
+  template:
+    metadata:
+      labels:
+        app: authorization
+    spec:
+      containers:
+        - name: authorization-container
+          image: acrekstest.azurecr.io/azure-authorization-microservice:bf1222b
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+          resources:
+            requests:
+              memory: "200Mi"
+            limits:
+              memory: "350Mi"

@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: account
+  template:
+    metadata:
+      labels:
+        app: account
+    spec:
+      initContainers:
+        - name: wait-for-mongodb-service
+          image: alpine
+          command: ["sh", "-c", "for i in $(seq 1 120); do nc -zvw1 account-mongo 27017 && exit 0 || sleep 5; done; exit 1"]
+      containers:
+        - name: account-container
+          image: acrekstest.azurecr.io/azure-account-microservice:v1
+          imagePullPolicy: Always
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+            - name: SPRING_CONFIG_LOCATION
+              value: file:/resources-config/application.yml,file:/resources-config/account.yml
+          envFrom:
+            - secretRef:
+                name: account-service
+            - secretRef:
+                name: config-service
+            - secretRef:
+                name: mongodb-credentials
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: 300Mi
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /api/v1/actuator/info
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 20
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /api/v1/actuator/health
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+          volumeMounts:
+            - name: configmap-account-volume
+              mountPath: /resources-config
+      volumes:
+        - name: configmap-account-volume
+          configMap:
+            name: configmap-account
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: account
+spec:
+  selector:
+    app: account
+  ports:
+    - port: 80
+      targetPort: 80
