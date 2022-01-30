@@ -15,7 +15,7 @@ spec:
       initContainers:
         - name: wait-for-mongodb-service
           image: alpine
-          command: ["sh", "-c", "for i in $(seq 1 120); do nc -zvw1 statistics-mongo 27017 && exit 0 || sleep 5; done; exit 1"]
+          command: ["sh", "-c", "for i in $(seq 1 120); do nc -zvw1 mongo-statistics 27017 && exit 0 || sleep 5; done; exit 1"]
       containers:
         - name: statistics-container
           image: acrekstest.azurecr.io/azure-statistics-microservice:v1
@@ -27,21 +27,19 @@ spec:
               value: file:/resources-config/application.yml,file:/resources-config/statistic.yml
           envFrom:
             - secretRef:
-                name: config-service
-            - secretRef:
                 name: statistics-service
             - secretRef:
                 name: mongodb-credentials
           ports:
-            - containerPort: 80
+            - containerPort: 7000
           resources:
             limits:
               memory: 300Mi
           livenessProbe:
             httpGet:
               scheme: HTTP
-              path: /api/v1/actuator/info
-              port: 80
+              path: /statistics/actuator/info
+              port: 7000
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 2
@@ -50,8 +48,8 @@ spec:
           readinessProbe:
             httpGet:
               scheme: HTTP
-              path: /api/v1/actuator/health
-              port: 80
+              path: /statistics/actuator/health
+              port: 7000
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
@@ -74,4 +72,4 @@ spec:
     app: statistics
   ports:
     - port: 80
-      targetPort: 80
+      targetPort: 7000

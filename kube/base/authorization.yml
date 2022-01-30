@@ -15,7 +15,7 @@ spec:
       initContainers:
         - name: wait-for-mongodb-service
           image: alpine
-          command: ["sh", "-c", "for i in $(seq 1 120); do nc -zvw1 authorization-mongo 27017 && exit 0 || sleep 5; done; exit 1"]
+          command: ["sh", "-c", "for i in $(seq 1 120); do nc -zvw1 mongo-authorization 27017 && exit 0 || sleep 5; done; exit 1"]
       containers:
         - name: authorization-container
           image: acrekstest.azurecr.io/azure-authorization-microservice:v1
@@ -27,8 +27,6 @@ spec:
               value: file:/resources-config/application.yml,file:/resources-config/authorization.yml
           envFrom:
             - secretRef:
-                name: config-service
-            - secretRef:
                 name: account-service
             - secretRef:
                 name: statistics-service
@@ -37,15 +35,15 @@ spec:
             - secretRef:
                 name: mongodb-credentials
           ports:
-            - containerPort: 80
+            - containerPort: 5000
           resources:
             limits:
               memory: 300Mi
           livenessProbe:
             httpGet:
               scheme: HTTP
-              path: /api/v1/actuator/info
-              port: 80
+              path: /uaa/actuator/info
+              port: 5000
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 2
@@ -54,8 +52,8 @@ spec:
           readinessProbe:
             httpGet:
               scheme: HTTP
-              path: /api/v1/actuator/health
-              port: 80
+              path: /uaa/actuator/health
+              port: 5000
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
@@ -78,4 +76,4 @@ spec:
     app: authorization
   ports:
     - port: 80
-      targetPort: 80
+      targetPort: 5000

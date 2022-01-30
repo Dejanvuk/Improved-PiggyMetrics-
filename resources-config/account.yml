@@ -8,6 +8,8 @@ security:
       scope: server
 
 spring:
+  main:
+    allow-bean-definition-overriding: true
   data:
     mongodb:
       host: localhost
@@ -32,3 +34,5 @@ spring:
   config:
     activate:
       on-profile: prod
+
+spring.data.mongodb.host: mongo-account

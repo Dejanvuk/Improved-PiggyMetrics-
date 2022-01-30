@@ -15,7 +15,7 @@ spec:
       initContainers:
         - name: wait-for-mongodb-service
           image: alpine
-          command: ["sh", "-c", "for i in $(seq 1 120); do nc -zvw1 account-mongo 27017 && exit 0 || sleep 5; done; exit 1"]
+          command: ["sh", "-c", "for i in $(seq 1 120); do nc -zvw1 mongo-account 27017 && exit 0 || sleep 5; done; exit 1"]
       containers:
         - name: account-container
           image: acrekstest.azurecr.io/azure-account-microservice:v1
@@ -29,19 +29,17 @@ spec:
             - secretRef:
                 name: account-service
             - secretRef:
-                name: config-service
-            - secretRef:
                 name: mongodb-credentials
           ports:
-            - containerPort: 80
+            - containerPort: 6000
           resources:
             limits:
               memory: 300Mi
           livenessProbe:
             httpGet:
               scheme: HTTP
-              path: /api/v1/actuator/info
-              port: 80
+              path: /accounts/actuator/info
+              port: 6000
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 2
@@ -50,8 +48,8 @@ spec:
           readinessProbe:
             httpGet:
               scheme: HTTP
-              path: /api/v1/actuator/health
-              port: 80
+              path: /accounts/actuator/health
+              port: 6000
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
@@ -74,4 +72,4 @@ spec:
     app: account
   ports:
     - port: 80
-      targetPort: 80
+      targetPort: 6000

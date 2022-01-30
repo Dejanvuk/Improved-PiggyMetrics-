@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # A helper script to create the Kubernetes resources
+# To be used after docker-tag-push script
 
 # ACR_LOGIN_SERVER=$ACR_LOGIN_SERVER
 : ${ACR_LOGIN_SERVER=acrekstest.azurecr.io}
@@ -60,12 +61,10 @@ kubectl create secret generic notification-service \
     --from-literal=NOTIFICATION_SERVICE_PASSWORD=password \
     --save-config
 
-kubectl create secret generic config-service \
-    --from-literal=CONFIG_SERVICE_PASSWORD=password \
-    --save-config
-
 kubectl create secret generic mongodb-server-credentials \
+    --from-literal=MONGO_INITDB_ROOT_USERNAME=user \
     --from-literal=MONGO_INITDB_ROOT_PASSWORD=password \
+    --from-literal=MONGODB_PASSWORD=password \
     --save-config
 
 # Deploy all the resources

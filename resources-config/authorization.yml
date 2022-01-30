@@ -15,3 +15,5 @@ spring.profiles: docker-compose
 spring.data.mongodb.host: auth-mongodb
 ---
 spring.profiles: prod
+
+spring.data.mongodb.host: mongo-authorization

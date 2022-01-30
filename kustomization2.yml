@@ -4,3 +4,6 @@ bases:
   - ../../base
 patchesStrategicMerge:
   - account-prod.yml
+  - authorization-prod.yml
+  - notification-prod.yml
+  - statistics-prod.yml

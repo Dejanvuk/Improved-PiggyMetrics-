@@ -35,7 +35,7 @@ spec:
         runAsUser: 0
       containers:
         - name: mongo
-          image: mongo:4.0.21
+          image: acrekstest.azurecr.io/mongodb:v1
           envFrom:
             - secretRef:
                 name: mongodb-server-credentials

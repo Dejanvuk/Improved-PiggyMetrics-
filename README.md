@@ -4,10 +4,11 @@
 
 - Replaced Config service with k8 config-maps
 - Replaced Gateway service with k8 services & ingress
-- Inter-service communication: OpenFeign can now be replaced with k8 services
 - Replaced Registry service with k8 Deployment's
 - Replaced .env file with k8 secrets
 - Microservices no longer require the "resources" folder as we're mounting config-maps as volumes
+- Removed the config, netflix-eureka-client, ribbon dependencies
+- OpenFeign now uses the k8 services for inter-service communication
 
 # 
 # 1. HOW TO: Install Docker and Kubectl

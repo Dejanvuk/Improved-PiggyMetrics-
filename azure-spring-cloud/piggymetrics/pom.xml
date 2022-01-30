@@ -34,9 +34,6 @@
 	</dependencyManagement>
 	
 	<modules>
-		<module>ConfigServer</module>
-		<module>Eureka-Discovery</module>
-		<module>Gateway</module>
 		<module>auth-service</module>
 		<module>account-service</module>
 		<module>statistics-service</module>

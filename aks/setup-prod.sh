@@ -18,7 +18,7 @@ az acr create --resource-group myResourceGroup --name $ACR_NAME --sku Basic
 
 az aks create \
     --resource-group $RG_NAME \
-    --name ACR_NAME \
+    --name myAKSCluster \
     --node-count 3 \
     --generate-ssh-keys \
     --attach-acr $ACR_NAME

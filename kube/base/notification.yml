@@ -15,7 +15,7 @@ spec:
       initContainers:
         - name: wait-for-mongodb-service
           image: alpine
-          command: ["sh", "-c", "for i in $(seq 1 120); do nc -zvw1 notification-mongo 27017 && exit 0 || sleep 5; done; exit 1"]
+          command: ["sh", "-c", "for i in $(seq 1 120); do nc -zvw1 mongo-notification 27017 && exit 0 || sleep 5; done; exit 1"]
       containers:
         - name: notification-container
           image: acrekstest.azurecr.io/azure-notification-microservice:v1
@@ -29,19 +29,17 @@ spec:
             - secretRef:
                 name: mongodb-credentials
             - secretRef:
-                name: config-service
-            - secretRef:
                 name: notification-service
           ports:
-            - containerPort: 80
+            - containerPort: 8000
           resources:
             limits:
               memory: 300Mi
           livenessProbe:
             httpGet:
               scheme: HTTP
-              path: /api/v1/actuator/info
-              port: 80
+              path: /notifications/actuator/info
+              port: 8000
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 2
@@ -50,8 +48,8 @@ spec:
           readinessProbe:
             httpGet:
               scheme: HTTP
-              path: /api/v1/actuator/health
-              port: 80
+              path: /notifications/actuator/health
+              port: 8000
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
@@ -74,4 +72,4 @@ spec:
     app: notification
   ports:
     - port: 80
-      targetPort: 80
+      targetPort: 8000

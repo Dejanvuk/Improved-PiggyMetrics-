@@ -17,7 +17,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import java.util.Arrays;
 
 @SpringBootApplication
-@EnableDiscoveryClient
 @EnableOAuth2Client
 @EnableFeignClients
 @EnableGlobalMethodSecurity(prePostEnabled = true)
