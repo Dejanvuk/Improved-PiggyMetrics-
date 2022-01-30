@@ -33,3 +33,8 @@ app:
   statistics-service-host: statistic
   statistics-service-port: 80
 
+security:
+  oauth2:
+    resource:
+      user-info-uri: "http://${app.auth-service}:${app.auth-server-port}/uaa/users/current"
+

@@ -19,7 +19,10 @@ spring:
 server:
   servlet:
     context-path: /accounts
-  port: 6000
+  port: 80
+
+management.endpoint.health.show-details: "ALWAYS"
+management.endpoints.web.exposure.include: "*"
 
 ---
 spring:
@@ -36,3 +39,12 @@ spring:
       on-profile: prod
 
 spring.data.mongodb.host: mongo-account
+
+security:
+  oauth2:
+    client:
+      clientId: account-service
+      clientSecret: ${ACCOUNT_SERVICE_PASSWORD}
+      accessTokenUri: http://${app.auth-service}:80/uaa/oauth/token
+      grant-type: client_credentials
+      scope: server

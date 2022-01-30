@@ -2,5 +2,14 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+  - notification.yml
+  - notification-mongo.yml
+  - statistics.yml
+  - statistics-mongo.yml
+  - authorization.yml
+  - authorization-mongo.yml
   - account.yml
   - account-mongo.yml
+  - rabbitmq.yml
+  - rabbitmq-secret.yml
+  - rabbitmq-configmap.yml

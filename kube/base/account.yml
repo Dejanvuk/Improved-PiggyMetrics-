@@ -31,15 +31,15 @@ spec:
             - secretRef:
                 name: mongodb-credentials
           ports:
-            - containerPort: 6000
+            - containerPort: 80
           resources:
             limits:
-              memory: 300Mi
+              memory: 400Mi
           livenessProbe:
             httpGet:
               scheme: HTTP
               path: /accounts/actuator/info
-              port: 6000
+              port: 80
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 2
@@ -49,7 +49,7 @@ spec:
             httpGet:
               scheme: HTTP
               path: /accounts/actuator/health
-              port: 6000
+              port: 80
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
@@ -72,4 +72,4 @@ spec:
     app: account
   ports:
     - port: 80
-      targetPort: 6000
+      targetPort: 80
