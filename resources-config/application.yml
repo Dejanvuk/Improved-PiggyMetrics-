@@ -12,19 +12,6 @@ security:
 spring:
   config:
     activate:
-      on-profile: docker-compose
-
-app:
-  registry: registry
-  auth-service: auth-server
-  auth-server-port: 5000
-  statistics-service-host: statistics-service
-  statistics-service-port: 80
-
----
-spring:
-  config:
-    activate:
       on-profile: prod
 
 app:

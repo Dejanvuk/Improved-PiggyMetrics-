@@ -19,7 +19,7 @@ spring:
 server:
   servlet:
     context-path: /statistics
-  port: 7000
+  port: 80
 
 rates:
   url: https://api.exchangeratesapi.io
@@ -39,6 +39,10 @@ spring:
   config:
     activate:
       on-profile: prod
+
+spring.rabbitmq:
+  host: rabbitmq
+  port: 5672
 
 spring.data.mongodb.host: mongo-statistics
 

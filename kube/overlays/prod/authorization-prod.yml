@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: authorization-container
-          image: acrekstest.azurecr.io/azure-authorization-microservice:8f23043
+          image: akstestacrr.azurecr.io/azure-authorization-microservice:8f23043
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"

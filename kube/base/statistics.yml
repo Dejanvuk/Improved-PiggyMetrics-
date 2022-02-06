@@ -18,7 +18,7 @@ spec:
           command: ["sh", "-c", "for i in $(seq 1 120); do nc -zvw1 mongo-statistics 27017 && exit 0 || sleep 5; done; exit 1"]
       containers:
         - name: statistics-container
-          image: acrekstest.azurecr.io/azure-statistics-microservice:v1
+          image: akstestacrr.azurecr.io/azure-statistics-microservice:v1
           imagePullPolicy: Always
           env:
             - name: SPRING_PROFILES_ACTIVE

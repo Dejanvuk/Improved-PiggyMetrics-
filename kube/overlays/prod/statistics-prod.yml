@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: statistics-container
-          image: acrekstest.azurecr.io/azure-statistics-microservice:8f23043
+          image: akstestacrr.azurecr.io/azure-statistics-microservice:8f23043
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"
