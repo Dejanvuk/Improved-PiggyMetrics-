@@ -9,6 +9,7 @@
 - Microservices no longer require the "resources" folder as we're mounting config-maps as volumes
 - Removed the config, netflix-eureka-client, ribbon dependencies
 - OpenFeign now uses the k8 services for inter-service communication
+- Notification service still requires a valid smtp gmail to work
 
 # 
 # 1. HOW TO: Install Docker and Kubectl
