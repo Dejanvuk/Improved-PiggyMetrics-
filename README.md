@@ -1,5 +1,5 @@
 # 
-# Changes done to the Piggymetrics app
+# Changes done to the <a href="https://github.com/Dejanvuk/PiggyMetrics-Upgraded">Piggymetrics<a> app to port it to K8
 #
 
 - Replaced Config service with k8 config-maps
